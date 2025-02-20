@@ -1,0 +1,23 @@
+security:
+    password_hashers:
+        App\User\Domain\Entity\User:
+            algorithm: auto
+
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\User\Domain\Entity\User
+                property: email
+    
+    firewalls:
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: app_user_provider
+            custom_authenticators:
+                - App\User\Infrastructure\Security\ApiTokenAuthenticator
+
+    access_control:
+        - { path: ^/api/user/register, roles: PUBLIC_ACCESS }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

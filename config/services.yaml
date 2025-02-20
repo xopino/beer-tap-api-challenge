@@ -9,7 +9,3 @@ services:
         resource: '../src/'
         exclude:
             - '../src/Kernel.php'
-    
-    Doctrine\Migrations\Tools\Console\Command\:
-        resource: '../vendor/doctrine/migrations/lib/Doctrine/Migrations/Tools/Console/Command'
-        tags: [ 'console.command' ]

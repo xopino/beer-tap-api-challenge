@@ -1,0 +1,4 @@
+GetHealth:
+    path: /register
+    controller: App\User\Infrastructure\EntryPoint\Api\Auth\AuthController
+    methods: [POST]
