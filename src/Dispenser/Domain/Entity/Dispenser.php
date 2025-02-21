@@ -2,15 +2,20 @@
 
 namespace App\Dispenser\Domain\Entity;
 
-use App\Dispenser\Infrastructure\Persistence\Doctrine\Repository\DispenserRepository;
+use App\Dispenser\Domain\Bus\Event\DispenserOpenedDomainEvent;
+use App\Dispenser\Infrastructure\Persistence\Doctrine\Repository\DispenserDoctrineRepository;
+use App\Shared\Domain\Entity\AggregateRoot;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: DispenserRepository::class)]
-class Dispenser
+#[ORM\Entity(repositoryClass: DispenserDoctrineRepository::class)]
+class Dispenser extends AggregateRoot
 {
+    const STATUS_OPEN   = 'OPEN';
+    const STATUS_CLOSED = 'CLOSED';
+
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     private string $id;
@@ -23,6 +28,9 @@ class Dispenser
 
     #[ORM\Column]
     private int $promoterId;
+
+    #[ORM\Column]
+    private string $status = self::STATUS_CLOSED;
 
     public function __construct(
         ?string $anUuid = null
@@ -70,5 +78,36 @@ class Dispenser
         $this->promoterId = $promoterId;
 
         return $this;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function open(int $attendeeId): static
+    {
+        if ($this->isOpen()) {
+            throw new \Exception('Dispenser already open');
+        }
+
+
+        $this->status = self::STATUS_OPEN;
+
+        $this->record(new DispenserOpenedDomainEvent($this->id, $attendeeId));
+
+        return $this;
+    }
+
+    public function close(): static
+    {
+        $this->status = self::STATUS_CLOSED;
+
+        return $this;
+    }
+
+    public function isOpen(): bool
+    {
+        return $this->status === self::STATUS_OPEN;
     }
 }

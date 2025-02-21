@@ -21,4 +21,5 @@ security:
     access_control:
         - { path: ^/api/user/register, roles: PUBLIC_ACCESS }
         - { path: ^/api/dispenser/create, roles: ROLE_PROMOTER }
+        - { path: ^/api/dispenser/open, roles: ROLE_ATTENDEE }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

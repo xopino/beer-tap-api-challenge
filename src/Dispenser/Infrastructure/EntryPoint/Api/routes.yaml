@@ -2,3 +2,8 @@ CreateDispenser:
     path: /create
     controller: App\Dispenser\Infrastructure\EntryPoint\Api\Create\CreateDispenserController
     methods: [POST]
+
+OpenDispenser:
+    path: /open
+    controller: App\Dispenser\Infrastructure\EntryPoint\Api\Open\OpenDispenserController
+    methods: [POST]

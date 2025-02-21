@@ -9,3 +9,11 @@ services:
         resource: '../src/'
         exclude:
             - '../src/Kernel.php'
+
+    App\Dispenser\Application\Command\OpenDispenser\OpenDispenserCommandHandler:
+        class: App\Dispenser\Application\Command\OpenDispenser\OpenDispenserCommandHandler
+        tags: ['messenger.message_handler']
+    
+    App\Dispenser\Application\Event\DispenserOpened\StartServiceOnDispenserOpenedEventHandler:
+        class: App\Dispenser\Application\Event\DispenserOpened\StartServiceOnDispenserOpenedEventHandler
+        tags: [ 'messenger.message_handler' ]

@@ -6,5 +6,6 @@ use App\Dispenser\Domain\Entity\Dispenser;
 
 interface DispenserRepositoryInterface
 {
+    public function findById(string $id): ?Dispenser;
     public function save(Dispenser $dispenser): void;
 }

@@ -23,9 +23,10 @@ class AuthController extends BaseController
         }
 
         //TODO: Use Role VO
-        if(!in_array($data['roles'], ['ROLE_PROMOTER', 'ROLE_ATTENDEE'])) {
+        if (!is_array($data['roles']) || empty($data['roles']) || array_diff($data['roles'], ['ROLE_PROMOTER', 'ROLE_ATTENDEE'])) {
             return $this->json(['error' => 'Invalid roles'], 400);
         }
+
 
         //TODO: Create RegisterUserUseCase
         $existingUser = $userRepository->findOneBy(['email' => $data['email']]);
