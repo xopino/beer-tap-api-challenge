@@ -12,4 +12,8 @@ CloseDispenser:
     path: /close
     controller: App\Dispenser\Infrastructure\EntryPoint\Api\Close\CloseDispenserController
     methods: [POST]
-
+    
+Info:
+    path: /info
+    controller: App\Dispenser\Infrastructure\EntryPoint\Api\Info\PromoterDispensersInfoController
+    methods: [GET]

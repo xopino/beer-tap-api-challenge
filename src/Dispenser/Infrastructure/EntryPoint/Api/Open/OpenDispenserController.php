@@ -18,7 +18,7 @@ class OpenDispenserController extends BaseController
             $data = json_decode($request->getContent(), true);
 
             if (!isset($data['dispenser_id'])) {
-                throw new \Exception('Dispenser id is required');
+                return $this->json(['Dispenser id is required'], Response::HTTP_BAD_REQUEST);
             }
 
             $user = $this->getUser();
@@ -30,7 +30,7 @@ class OpenDispenserController extends BaseController
 
             $this->dispatch($command);
 
-            return $this->json(['message' => 'Dispenser open, enjoy!'], Response::HTTP_OK);
+            return $this->json(['message' => 'Dispenser opened, enjoy!'], Response::HTTP_OK);
         } catch (\Throwable $throwable) {
 
             //TODO: Use Domain Errors

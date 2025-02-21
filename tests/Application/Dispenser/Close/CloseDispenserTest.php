@@ -22,7 +22,7 @@ class CloseDispenserTest extends WebTestCase
         $this->client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $token);
 
         $payload = [
-            'dispenser_id' => 'ff6033ee-7bf3-4f10-952d-2a2b55a94001',
+            'dispenser_id' => '70733e0f-8fa8-4f45-b1f3-661d5d7baf0d',
         ];
 
         $this->client->request('POST', '/api/dispenser/close', [], [], [

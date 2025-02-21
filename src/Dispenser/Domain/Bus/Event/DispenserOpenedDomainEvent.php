@@ -7,11 +7,11 @@ use App\Shared\Domain\Bus\Event\DomainEvent;
 class DispenserOpenedDomainEvent extends DomainEvent
 {
     public function __construct(
-        private readonly string|int $aggregateId,
-        public readonly int        $attendeeId
+        private readonly string $dispenserId,
+        public readonly int     $attendeeId
     )
     {
-        $this->occurredOn = new \DateTimeImmutable();
+        parent::__construct($this->dispenserId);
     }
 
     public static function eventName(): string

@@ -8,6 +8,12 @@ class DispenserMother
 {
     public static function random(): Dispenser
     {
-        return new Dispenser();
+        $dispenser = new Dispenser();
+        $dispenser
+            ->setFlowVolume(0.5)
+            ->setPrice(0.5)
+            ->setPromoterId(1);
+
+        return $dispenser;
     }
 }

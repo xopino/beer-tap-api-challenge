@@ -8,4 +8,6 @@ interface DispenserRepositoryInterface
 {
     public function findById(string $id): ?Dispenser;
     public function save(Dispenser $dispenser): void;
+
+    public function searchByPromoterId(int $promoterId): array;
 }

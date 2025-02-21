@@ -7,7 +7,7 @@ use App\Dispenser\Domain\Entity\Service;
 use App\Dispenser\Domain\Persistence\Repository\ServiceRepositoryInterface;
 use App\Shared\Domain\Bus\Event\EventHandlerInterface;
 
-class StartServiceOnDispenserOpenedEventHandler implements EventHandlerInterface
+class CreateServiceOnDispenserOpenedEventHandler implements EventHandlerInterface
 {
     public function __construct(
         private readonly ServiceRepositoryInterface $serviceRepository

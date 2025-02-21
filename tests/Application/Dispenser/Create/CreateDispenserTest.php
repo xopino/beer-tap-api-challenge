@@ -41,10 +41,9 @@ class CreateDispenserTest extends WebTestCase
 
     public function testBadRequestWhenMissingRequiredFields(): void
     {
-        $token = 'b1841aa585fffcdc7fe817dd9ad150996e1c6f37b889d9a4dde0048f5e83fccb';
+        $token = '7be58f2b02f7c182e8cab4b915ff25d2f42e3dc1bdd9772d727a4888edca5dd7';
         $this->client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $token);
 
-        // Missing the 'price' field
         $payload = [
             'flow_volume' => 100
         ];
@@ -58,7 +57,7 @@ class CreateDispenserTest extends WebTestCase
             json_encode($payload)
         );
 
-        $this->assertResponseStatusCodeSame(400);
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
         $responseData = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertIsArray($responseData, 'Response is not valid JSON');
         $this->assertArrayHasKey('error', $responseData, 'Response does not contain "error" key');

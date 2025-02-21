@@ -27,7 +27,6 @@ class OpenDispenserCommandHandler implements CommandHandlerInterface
 
             //TODO: Use Transactional outbox pattern
             $dispenser->open($command->attendeeId);
-
             $this->dispenserRepository->save($dispenser);
             $this->eventBus->publish(...$dispenser->pullDomainEvents());
         } catch (\Throwable $throwable) {

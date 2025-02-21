@@ -19,8 +19,17 @@ class ServiceDoctrineRepository extends AbstractDoctrineRepository implements Se
         return $this->find($id);
     }
 
-    public function findByDispenserId(string $dispenserId): ?Service
+    public function searchByDispenserId(string $dispenserId): array
     {
-        return $this->findOneBy(['dispenserId' => $dispenserId]);
+        return $this->findBy(['dispenserId' => $dispenserId]);
+    }
+
+
+    public function findOpenServiceByDispenserId(string $dispenserId): ?Service
+    {
+        return $this->findOneBy([
+                                    'dispenserId' => $dispenserId,
+                                    'endDate'     => null
+                                ]);
     }
 }

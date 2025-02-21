@@ -10,5 +10,7 @@ interface ServiceRepositoryInterface
 
     public function save(Service $dispenser): void;
 
-    public function findByDispenserId(string $dispenserId): ?Service;
+    public function searchByDispenserId(string $dispenserId): array;
+
+    public function findOpenServiceByDispenserId(string $dispenserId): ?Service;
 }

@@ -18,4 +18,9 @@ class DispenserDoctrineRepository extends AbstractDoctrineRepository implements 
     {
         return $this->find($id);
     }
+
+    public function searchByPromoterId(int $promoterId): array
+    {
+        return $this->findBy(['promoterId' => $promoterId]);
+    }
 }

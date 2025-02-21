@@ -2,7 +2,9 @@
 
 namespace App\Dispenser\Domain\Entity;
 
+use App\Dispenser\Domain\Service\MoneySpentCalculator;
 use App\Dispenser\Infrastructure\Persistence\Doctrine\Repository\ServiceDoctrineRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
@@ -25,6 +27,9 @@ class Service
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $endDate = null;
+
+    #[ORM\Column(type: Types::FLOAT, nullable: true)]
+    private ?float $moneySpent = null;
 
     private function __construct(
         ?string $anUuid = null
@@ -99,9 +104,21 @@ class Service
         return $this;
     }
 
-    public function finish(): static
+    public function getMoneySpent(): ?float
     {
-        $this->endDate = date('Y-m-d H:i:s');
+        return $this->moneySpent;
+    }
+
+    public function finish(Dispenser $dispenser, MoneySpentCalculator $calculator): static
+    {
+        $this->setEndDate(date('Y-m-d H:i:s'));
+
+        $this->moneySpent = $calculator->calculate(
+            $this->startDate,
+            $this->endDate,
+            $dispenser->getFlowVolume(),
+            $dispenser->getPrice()
+        );
 
         return $this;
     }

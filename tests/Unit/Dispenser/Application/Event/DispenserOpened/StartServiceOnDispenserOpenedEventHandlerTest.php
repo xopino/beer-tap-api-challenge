@@ -2,21 +2,21 @@
 
 namespace App\Tests\Unit\Dispenser\Application\Event\DispenserOpened;
 
-use App\Dispenser\Application\Event\DispenserOpened\StartServiceOnDispenserOpenedEventHandler;
+use App\Dispenser\Application\Event\DispenserOpened\CreateServiceOnDispenserOpenedEventHandler;
 use App\Dispenser\Domain\Bus\Event\DispenserOpenedDomainEvent;
 use App\Dispenser\Domain\Persistence\Repository\ServiceRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 class StartServiceOnDispenserOpenedEventHandlerTest extends TestCase
 {
-    private StartServiceOnDispenserOpenedEventHandler $classUnderTest;
-    private ServiceRepositoryInterface                $serviceRepositoryMock;
+    private CreateServiceOnDispenserOpenedEventHandler $classUnderTest;
+    private ServiceRepositoryInterface                 $serviceRepositoryMock;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->serviceRepositoryMock = $this->createMock(ServiceRepositoryInterface::class);
-        $this->classUnderTest        = new StartServiceOnDispenserOpenedEventHandler(
+        $this->classUnderTest        = new CreateServiceOnDispenserOpenedEventHandler(
             $this->serviceRepositoryMock
         );
     }

@@ -4,9 +4,7 @@ namespace App\Tests\Unit\Dispenser\Application\UseCase\Create;
 
 use App\Dispenser\Application\UseCase\Create\CreateDispenserUseCase;
 use App\Dispenser\Application\UseCase\Create\CreateDispenserUseCaseRequest;
-use App\Dispenser\Domain\Entity\Dispenser;
 use App\Dispenser\Domain\Persistence\Repository\DispenserRepositoryInterface;
-use App\Dispenser\Infrastructure\Persistence\Doctrine\Repository\DispenserRepository;
 use PHPUnit\Framework\TestCase;
 
 class CreateDispenserUseCaseTest extends TestCase

@@ -21,8 +21,8 @@ class Dispenser extends AggregateRoot
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     private string $id;
 
-    #[ORM\Column]
-    private int $flowVolume;
+    #[ORM\Column(type: Types::FLOAT)]
+    private float $flowVolume;
 
     #[ORM\Column(type: Types::FLOAT)]
     private float $price;
@@ -45,24 +45,24 @@ class Dispenser extends AggregateRoot
         return $this->id;
     }
 
-    public function getFlowVolume(): int
+    public function getFlowVolume(): float
     {
         return $this->flowVolume;
     }
 
-    public function setFlowVolume(int $flowVolume): static
+    public function setFlowVolume(float $flowVolume): static
     {
         $this->flowVolume = $flowVolume;
 
         return $this;
     }
 
-    public function getPrice(): string
+    public function getPrice(): float
     {
         return $this->price;
     }
 
-    public function setPrice(string $price): static
+    public function setPrice(float $price): static
     {
         $this->price = $price;
 
@@ -89,9 +89,9 @@ class Dispenser extends AggregateRoot
     public function open(int $attendeeId): static
     {
         if ($this->isOpen()) {
+            //TODO: Domain Exception
             throw new \Exception('Dispenser already open');
         }
-
 
         $this->status = self::STATUS_OPEN;
 

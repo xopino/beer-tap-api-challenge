@@ -29,6 +29,7 @@ class CreateDispenserUseCase
             );
         } catch (\Throwable $throwable) {
             //TODO: Use Domain Error Messages
+            //TODO: Log
             return CreateDispenserUseCaseResponse::createInvalidResponse(
                 $throwable->getMessage()
             );
