@@ -3,6 +3,9 @@
 up: deps
 	docker compose up -d
 
+up-test:
+	docker compose -f docker-compose.test.yml up -d
+
 test: test/unit test/application
 	docker compose -f docker-compose.test.yml down
 
@@ -28,5 +31,21 @@ build:
 down:
 	docker compose -f docker-compose.yml -f docker-compose.test.yml down
 
-.test/build:
+.test/build: migrations-test load-fixtures-test
 	docker compose -f docker-compose.test.yml build
+
+migrations-test:
+	docker compose -f docker-compose.test.yml run --rm skeleton-php-symfony-fpm-test sh -c "\
+        			php bin/console doctrine:migrations:migrate && php bin/console doctrine:schema:update --force"
+
+migrations:
+	docker compose run --rm skeleton-php-symfony-fpm sh -c "\
+        			php bin/console doctrine:migrations:migrate"
+
+load-fixtures-test:
+	docker compose -f docker-compose.test.yml run --rm skeleton-php-symfony-fpm-test sh -c "\
+    			php bin/console doctrine:fixtures:load"
+
+load-fixtures:
+	docker compose run --rm skeleton-php-symfony-fpm sh -c "\
+    			php bin/console doctrine:fixtures:load"

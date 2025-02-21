@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class AuthController extends BaseController
+class RegisterUserController extends BaseController
 {
     public function __invoke(
         Request                     $request,

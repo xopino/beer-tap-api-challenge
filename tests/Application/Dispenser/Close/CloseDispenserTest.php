@@ -2,6 +2,9 @@
 
 namespace App\Tests\Application\Dispenser\Close;
 
+use App\DataFixtures\ApplicationDataFixtures;
+use App\Dispenser\Domain\Entity\Dispenser;
+use App\User\Domain\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -9,25 +12,30 @@ class CloseDispenserTest extends WebTestCase
 {
     private KernelBrowser $client;
 
+    private User $user;
+
+    private Dispenser $dispenser;
+
     protected function setUp(): void
     {
         parent::setUp();
-        $this->client = static::createClient();
+        $this->client        = static::createClient();
+        $entityManager = $this->getContainer()->get('doctrine');
+        $this->dispenser = $entityManager->getRepository(Dispenser::class)->findById(ApplicationDataFixtures::DISPENSER_ID_OPENED);
+        $this->user      = $entityManager->getRepository(User::class)->findOneBy(['email' => ApplicationDataFixtures::USER_EMAIL_OPENED]);
     }
 
     public function testCloseDispenserReturnsOk(): void
     {
-        $token = '7be58f2b02f7c182e8cab4b915ff25d2f42e3dc1bdd9772d727a4888edca5dd7';
-
-        $this->client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $token);
+        $this->client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $this->user->getApiToken());
 
         $payload = [
-            'dispenser_id' => '70733e0f-8fa8-4f45-b1f3-661d5d7baf0d',
+            'dispenser_id' => $this->dispenser->getId(),
         ];
 
         $this->client->request('POST', '/api/dispenser/close', [], [], [
             'CONTENT_TYPE' => 'application/json'
-        ], json_encode($payload));
+        ],                     json_encode($payload));
 
         $this->assertResponseIsSuccessful();
     }

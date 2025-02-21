@@ -28,14 +28,13 @@ class CloseDispenserCommandHandler implements CommandHandlerInterface
 
             //TODO: Use Transactional outbox pattern
             $dispenser->close();
-
             $this->dispenserRepository->save($dispenser);
             $this->eventBus->publish(...$dispenser->pullDomainEvents());
+
         } catch (\Throwable $throwable) {
             //TODO: Use DomainError
             //TODO: Use Logger
-            throw new \Exception('Error opening dispenser');
+            throw new \Exception('Error closing dispenser');
         }
     }
-
 }

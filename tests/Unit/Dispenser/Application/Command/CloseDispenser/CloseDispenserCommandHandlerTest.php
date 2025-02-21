@@ -54,7 +54,7 @@ class CloseDispenserCommandHandlerTest extends TestCase
             ->willReturn(null);
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Error opening dispenser');
+        $this->expectExceptionMessage('Error closing dispenser');
 
         $this->classUnderTest->__invoke(
             new CloseDispenserCommand(

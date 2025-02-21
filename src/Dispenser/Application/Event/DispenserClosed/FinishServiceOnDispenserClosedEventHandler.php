@@ -24,8 +24,8 @@ class FinishServiceOnDispenserClosedEventHandler implements EventHandlerInterfac
             $service = $this->serviceRepository->findOpenServiceByDispenserId($event->aggregateId());
 
             if (!$service) {
-                //TODO: Use DomainException
-                throw new \Exception('Service not found');
+                //TODO: Log
+                return;
             }
 
             $dispenser = $this->dispenserRepository->findById($event->aggregateId());

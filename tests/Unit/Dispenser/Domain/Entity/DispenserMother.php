@@ -16,4 +16,28 @@ class DispenserMother
 
         return $dispenser;
     }
+
+    public static function opened(string $id, int $attendeeId): Dispenser
+    {
+        $dispenser = new Dispenser($id);
+        $dispenser
+            ->setFlowVolume(0.5)
+            ->setPrice(0.5)
+            ->setPromoterId(1)
+            ->open($attendeeId);
+
+        return $dispenser;
+    }
+
+    public static function closed(string $id): Dispenser
+    {
+        $dispenser = new Dispenser($id);
+        $dispenser
+            ->setFlowVolume(0.5)
+            ->setPrice(0.5)
+            ->setPromoterId(1)
+            ->close();
+
+        return $dispenser;
+    }
 }

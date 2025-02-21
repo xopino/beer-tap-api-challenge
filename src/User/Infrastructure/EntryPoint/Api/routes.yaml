@@ -1,4 +1,4 @@
 RegisterUser:
     path: /register
-    controller: App\User\Infrastructure\EntryPoint\Api\Auth\AuthController
+    controller: App\User\Infrastructure\EntryPoint\Api\Auth\RegisterUserController
     methods: [POST]
