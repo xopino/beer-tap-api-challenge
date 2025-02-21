@@ -8,6 +8,11 @@ User:
     resource: ../src/User/Infrastructure/EntryPoint/Api/routes.yaml
     trailing_slash_on_root: false
 
+Dispenser:
+    prefix: /api/dispenser
+    resource: ../src/Dispenser/Infrastructure/EntryPoint/Api/routes.yaml
+    trailing_slash_on_root: false
+
 kernel:
     resource: ../src/Kernel.php
     type: annotation

@@ -2,17 +2,14 @@
 
 namespace App\User\Infrastructure\EntryPoint\Api\Auth;
 
+use App\Shared\Infrastructure\EntryPoint\Api\BaseController;
 use App\User\Domain\Entity\User;
 use App\User\Infrastructure\Persistence\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-#[AsController]
-class AuthController extends AbstractController
+class AuthController extends BaseController
 {
     public function __invoke(
         Request                     $request,
@@ -23,6 +20,11 @@ class AuthController extends AbstractController
 
         if (!$data['email'] || !$data['password'] || !$data['roles']) {
             return $this->json(['error' => 'Email and password are required.'], 400);
+        }
+
+        //TODO: Use Role VO
+        if(!in_array($data['roles'], ['ROLE_PROMOTER', 'ROLE_ATTENDEE'])) {
+            return $this->json(['error' => 'Invalid roles'], 400);
         }
 
         //TODO: Create RegisterUserUseCase

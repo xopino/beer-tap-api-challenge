@@ -12,3 +12,10 @@ doctrine:
                 is_bundle: false
                 prefix: App\User\Domain\Entity
                 alias: App
+            
+            Dispenser:
+                type: attribute
+                dir: '%kernel.project_dir%/src/Dispenser/Domain/Entity'
+                is_bundle: false
+                prefix: App\Dispenser\Domain\Entity
+                alias: App
