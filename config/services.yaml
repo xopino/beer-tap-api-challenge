@@ -14,6 +14,14 @@ services:
         class: App\Dispenser\Application\Command\OpenDispenser\OpenDispenserCommandHandler
         tags: ['messenger.message_handler']
     
+    App\Dispenser\Application\Command\CloseDispenser\CloseDispenserCommandHandler:
+        class: App\Dispenser\Application\Command\CloseDispenser\CloseDispenserCommandHandler
+        tags: [ 'messenger.message_handler' ]
+    
     App\Dispenser\Application\Event\DispenserOpened\StartServiceOnDispenserOpenedEventHandler:
         class: App\Dispenser\Application\Event\DispenserOpened\StartServiceOnDispenserOpenedEventHandler
+        tags: [ 'messenger.message_handler' ]
+    
+    App\Dispenser\Application\Event\DispenserClosed\FinishServiceOnDispenserClosedEventHandler:
+        class: App\Dispenser\Application\Event\DispenserClosed\FinishServiceOnDispenserClosedEventHandler
         tags: [ 'messenger.message_handler' ]

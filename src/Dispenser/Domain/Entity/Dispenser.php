@@ -2,6 +2,7 @@
 
 namespace App\Dispenser\Domain\Entity;
 
+use App\Dispenser\Domain\Bus\Event\DispenserClosedDomainEvent;
 use App\Dispenser\Domain\Bus\Event\DispenserOpenedDomainEvent;
 use App\Dispenser\Infrastructure\Persistence\Doctrine\Repository\DispenserDoctrineRepository;
 use App\Shared\Domain\Entity\AggregateRoot;
@@ -102,6 +103,8 @@ class Dispenser extends AggregateRoot
     public function close(): static
     {
         $this->status = self::STATUS_CLOSED;
+
+        $this->record(new DispenserClosedDomainEvent($this->id));
 
         return $this;
     }

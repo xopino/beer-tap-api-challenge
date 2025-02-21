@@ -98,4 +98,11 @@ class Service
 
         return $this;
     }
+
+    public function finish(): static
+    {
+        $this->endDate = date('Y-m-d H:i:s');
+
+        return $this;
+    }
 }

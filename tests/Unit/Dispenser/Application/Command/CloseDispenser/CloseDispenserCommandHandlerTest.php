@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Tests\Unit\Dispenser\Application\Command\OpenDispenser;
+namespace App\Tests\Unit\Dispenser\Application\Command\CloseDispenser;
 
-use App\Dispenser\Application\Command\OpenDispenser\OpenDispenserCommandHandler;
-use App\Dispenser\Domain\Bus\Command\OpenDispenser\OpenDispenserCommand;
-use App\Dispenser\Domain\Entity\Dispenser;
+use App\Dispenser\Application\Command\CloseDispenser\CloseDispenserCommandHandler;
+use App\Dispenser\Domain\Bus\Command\CloseDispenser\CloseDispenserCommand;
 use App\Dispenser\Domain\Persistence\Repository\DispenserRepositoryInterface;
 use App\Shared\Domain\Bus\Event\EventBusInterface;
 use App\Tests\Unit\Dispenser\Domain\Entity\DispenserMother;
 use PHPUnit\Framework\TestCase;
 
-class OpenDispenserCommandHandlerTest extends TestCase
+class CloseDispenserCommandHandlerTest extends TestCase
 {
-    private OpenDispenserCommandHandler  $classUnderTest;
+    private CloseDispenserCommandHandler $classUnderTest;
     private DispenserRepositoryInterface $dispenserRepositoryMock;
     private EventBusInterface            $eventBusMock;
 
@@ -23,13 +22,13 @@ class OpenDispenserCommandHandlerTest extends TestCase
         $this->dispenserRepositoryMock = $this->createMock(DispenserRepositoryInterface::class);
         $this->eventBusMock            = $this->createMock(EventBusInterface::class);
 
-        $this->classUnderTest = new OpenDispenserCommandHandler(
+        $this->classUnderTest = new CloseDispenserCommandHandler(
             $this->dispenserRepositoryMock,
             $this->eventBusMock
         );
     }
 
-    public function testInvokeShouldOpenDispenser(): void
+    public function testInvokeShouldCloseDispenser(): void
     {
         $dispenser = DispenserMother::random();
 
@@ -39,16 +38,15 @@ class OpenDispenserCommandHandlerTest extends TestCase
             ->willReturn($dispenser);
 
         $this->classUnderTest->__invoke(
-            new OpenDispenserCommand(
-                dispenserId: 'anUuid',
-                attendeeId : 1
+            new CloseDispenserCommand(
+                dispenserId: 'anUuid'
             )
         );
 
-        $this->assertTrue($dispenser->isOpen());
+        $this->assertTrue(!$dispenser->isOpen());
     }
 
-    public function testOpenDispenserShouldThrowExceptionWhenDispenserNotFound(): void
+    public function testCloseDispenserShouldThrowExceptionWhenDispenserNotFound(): void
     {
         $this->dispenserRepositoryMock
             ->expects($this->once())
@@ -59,9 +57,8 @@ class OpenDispenserCommandHandlerTest extends TestCase
         $this->expectExceptionMessage('Error opening dispenser');
 
         $this->classUnderTest->__invoke(
-            new OpenDispenserCommand(
-                dispenserId: 'anUuid',
-                attendeeId : 1
+            new CloseDispenserCommand(
+                dispenserId: 'anUuid'
             )
         );
     }

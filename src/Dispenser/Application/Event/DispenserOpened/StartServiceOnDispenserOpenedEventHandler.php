@@ -20,7 +20,7 @@ class StartServiceOnDispenserOpenedEventHandler implements EventHandlerInterface
         try {
             $service = Service::create(
                 attendeeId : $event->attendeeId,
-                dispenserId: $event->aggregateId,
+                dispenserId: $event->aggregateId(),
             );
 
             $this->serviceRepository->save($service);

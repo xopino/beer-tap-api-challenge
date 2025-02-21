@@ -9,4 +9,6 @@ interface ServiceRepositoryInterface
     public function findById(string $id): ?Service;
 
     public function save(Service $dispenser): void;
+
+    public function findByDispenserId(string $dispenserId): ?Service;
 }

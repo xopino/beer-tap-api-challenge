@@ -7,3 +7,9 @@ OpenDispenser:
     path: /open
     controller: App\Dispenser\Infrastructure\EntryPoint\Api\Open\OpenDispenserController
     methods: [POST]
+
+CloseDispenser:
+    path: /close
+    controller: App\Dispenser\Infrastructure\EntryPoint\Api\Close\CloseDispenserController
+    methods: [POST]
+
