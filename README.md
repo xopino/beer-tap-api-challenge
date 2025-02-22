@@ -73,7 +73,12 @@ make up-test
 make test
 ```
 
-## Process Explanation
+To execute tests on the dev environment, first run the fixtures:
+```bash
+make load-fixtures
+```
+
+## Project Description
 
 This project is organized following a Domain-Driven Design (DDD) structure and applies a hexagonal architecture. The core domain is Dispenser, and the primary actions include:
 
@@ -101,6 +106,12 @@ Since the primary objective of a `Dispenser` is to serve beer, and the money spe
 The total spent calculation is done on `FinishDispenserSpendingLineOnDispenserClosedEventHandler` and `DispenserSpendingQueryHandler`.
 
 The event handler FinishDispenserSpendingLineOnDispenserClosedEventHandler uses dependency injection to receive the calculator implementation. This allows the application to change the calculation logic easily. Additionally, more handlers can be created with different calculators.
+
+### Ensuring Consistency
+
+In order to ensure consistency, the changes on the Entity status and the events that are published are wrapped into a transaction, so they are treated as a `UnitOfWork`. This pattern is called `Transactional outbox pattern`. 
+
+For this reason, the `ChangeStatusCommandHandler` is using a `TransactionManager` that rollbacks any change into the database if something goes wrong. Thanks to this, we avoid inconsistencies between Dispenser status and DispenserSpendingLine information.
 
 ## Next Steps
 
