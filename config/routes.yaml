@@ -3,16 +3,11 @@ Health:
     resource: ../src/Health/Infrastructure/Api/routes.yaml
     trailing_slash_on_root: false
 
-User:
-    prefix: /api/user
-    resource: ../src/User/Infrastructure/EntryPoint/Api/routes.yaml
-    trailing_slash_on_root: false
-
 Dispenser:
-    prefix: /api/dispenser
+    prefix: /dispenser
     resource: ../src/Dispenser/Infrastructure/EntryPoint/Api/routes.yaml
     trailing_slash_on_root: false
-
+    
 kernel:
     resource: ../src/Kernel.php
     type: annotation

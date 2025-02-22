@@ -6,7 +6,8 @@ use App\Dispenser\Domain\Service\MoneySpentCalculator;
 
 class DefaultMoneySpentCalculator implements MoneySpentCalculator
 {
-    public function calculate(string $startDate, string $endDate, float $flowVolume, float $price): float
+    const DEFAULT_PRICE = 12.25;
+    public function calculate(string $startDate, string $endDate, float $flowVolume): float
     {
         $start = new \DateTime($startDate);
         $end   = new \DateTime($endDate);
@@ -22,6 +23,6 @@ class DefaultMoneySpentCalculator implements MoneySpentCalculator
         $seconds = $end->getTimestamp() - $start->getTimestamp();
         $litersConsumed = $flowVolume * $seconds;
 
-        return round($litersConsumed * $price, 2);
+        return round($litersConsumed * self::DEFAULT_PRICE, 3);
     }
 }

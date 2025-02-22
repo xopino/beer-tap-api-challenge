@@ -18,14 +18,13 @@ class CreateDispenserUseCase
         try {
             $dispenser = new Dispenser();
             $dispenser
-                ->setFlowVolume($request->flowVolume)
-                ->setPrice($request->price)
-                ->setPromoterId($request->promoterId);
+                ->setFlowVolume($request->flowVolume);
 
             $this->dispenserRepository->save($dispenser);
 
             return CreateDispenserUseCaseResponse::createValidResponse(
-                $dispenser->getId()
+                $dispenser->getId(),
+                $dispenser->getFlowVolume()
             );
         } catch (\Throwable $throwable) {
             //TODO: Use Domain Error Messages

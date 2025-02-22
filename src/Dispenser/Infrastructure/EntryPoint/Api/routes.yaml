@@ -1,19 +1,19 @@
-CreateDispenser:
-    path: /create
+Create:
+    path: /
     controller: App\Dispenser\Infrastructure\EntryPoint\Api\Create\CreateDispenserController
     methods: [POST]
 
-OpenDispenser:
-    path: /open
-    controller: App\Dispenser\Infrastructure\EntryPoint\Api\Open\OpenDispenserController
-    methods: [POST]
-
-CloseDispenser:
-    path: /close
-    controller: App\Dispenser\Infrastructure\EntryPoint\Api\Close\CloseDispenserController
-    methods: [POST]
+ChangeStatus:
+    path: /{id}/status
+    controller: App\Dispenser\Infrastructure\EntryPoint\Api\Status\ChangeDispenserStatusController
+    methods: [PUT]
     
-Info:
-    path: /info
-    controller: App\Dispenser\Infrastructure\EntryPoint\Api\Info\PromoterDispensersInfoController
+Spending:
+    path: /{id}/spending
+    controller: App\Dispenser\Infrastructure\EntryPoint\Api\Spending\DispenserSpendingController
     methods: [GET]
+
+Docs:
+    path: /docs
+    controller: App\Dispenser\Infrastructure\EntryPoint\Api\ApiDocumentationController
+    methods: [ GET ]

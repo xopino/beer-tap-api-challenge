@@ -5,14 +5,7 @@ doctrine:
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
-        mappings:
-            User:
-                type: attribute
-                dir: '%kernel.project_dir%/src/User/Domain/Entity'
-                is_bundle: false
-                prefix: App\User\Domain\Entity
-                alias: App
-            
+        mappings:            
             Dispenser:
                 type: attribute
                 dir: '%kernel.project_dir%/src/Dispenser/Domain/Entity'

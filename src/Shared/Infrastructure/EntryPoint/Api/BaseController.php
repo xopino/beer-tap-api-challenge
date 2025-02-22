@@ -2,10 +2,10 @@
 
 namespace App\Shared\Infrastructure\EntryPoint\Api;
 
-use App\Shared\Domain\Bus\Command\Command;
-use App\Shared\Domain\Bus\Command\CommandBusInterface;
-use App\Shared\Domain\Bus\Query\QueryBusInterface;
-use App\Shared\Domain\Bus\Query\QueryResult;
+use App\Shared\Domain\Command\Command;
+use App\Shared\Domain\Command\CommandBusInterface;
+use App\Shared\Domain\Query\QueryBusInterface;
+use App\Shared\Domain\Query\QueryResult;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BaseController extends AbstractController

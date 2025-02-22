@@ -10,21 +10,17 @@ class DispenserMother
     {
         $dispenser = new Dispenser();
         $dispenser
-            ->setFlowVolume(0.5)
-            ->setPrice(0.5)
-            ->setPromoterId(1);
+            ->setFlowVolume(0.5);
 
         return $dispenser;
     }
 
-    public static function opened(string $id, int $attendeeId): Dispenser
+    public static function opened(string $id): Dispenser
     {
         $dispenser = new Dispenser($id);
         $dispenser
             ->setFlowVolume(0.5)
-            ->setPrice(0.5)
-            ->setPromoterId(1)
-            ->open($attendeeId);
+            ->changeStatus(Dispenser::STATUS_OPEN, date('Y-m-d\TH:i:s\Z'));
 
         return $dispenser;
     }
@@ -33,10 +29,7 @@ class DispenserMother
     {
         $dispenser = new Dispenser($id);
         $dispenser
-            ->setFlowVolume(0.5)
-            ->setPrice(0.5)
-            ->setPromoterId(1)
-            ->close();
+            ->setFlowVolume(0.5);
 
         return $dispenser;
     }

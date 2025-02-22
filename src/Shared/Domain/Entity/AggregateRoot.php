@@ -2,7 +2,7 @@
 
 namespace App\Shared\Domain\Entity;
 
-use App\Shared\Domain\Bus\Event\DomainEvent;
+use App\Shared\Domain\Event\DomainEvent;
 
 class AggregateRoot
 {

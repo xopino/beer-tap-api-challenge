@@ -4,7 +4,6 @@ namespace App\Dispenser\Infrastructure\EntryPoint\Api\Create;
 
 use App\Dispenser\Application\UseCase\Create\CreateDispenserUseCase;
 use App\Dispenser\Application\UseCase\Create\CreateDispenserUseCaseRequest;
-use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Infrastructure\EntryPoint\Api\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,19 +19,12 @@ class CreateDispenserController extends BaseController
         try {
             $data = json_decode($request->getContent(), true);
 
-            if (!isset($data['flow_volume']) || !isset($data['price'])) {
-                return $this->json(['error' => 'Missing required fields'], Response::HTTP_BAD_REQUEST);
+            if (!isset($data['flow_volume'])) {
+                return $this->json(['error' => 'Missing flow_volume'], Response::HTTP_BAD_REQUEST);
             }
 
-            $user = $this->getUser();
-
-            $flowVolume = (int) $data['flow_volume'];
-            $price      = (float) $data['price'];
-
             $request = new CreateDispenserUseCaseRequest(
-                $flowVolume,
-                $price,
-                $user->getId()
+                (float) $data['flow_volume']
             );
 
             $response = $useCase->execute($request);
@@ -43,10 +35,10 @@ class CreateDispenserController extends BaseController
 
             return $this->json(
                   [
-                      'message'      => $response->message,
-                      'dispenser_id' => $response->dispenserId
+                      'id' => $response->dispenserId,
+                      'flow_volume' => $response->flowVolume
                   ]
-                , Response::HTTP_CREATED
+                , Response::HTTP_OK
             );
         } catch (\Throwable $throwable) {
 

@@ -9,23 +9,19 @@ services:
         resource: '../src/'
         exclude:
             - '../src/Kernel.php'
-
-    App\Dispenser\Application\Command\OpenDispenser\OpenDispenserCommandHandler:
-        class: App\Dispenser\Application\Command\OpenDispenser\OpenDispenserCommandHandler
-        tags: ['messenger.message_handler']
     
-    App\Dispenser\Application\Command\CloseDispenser\CloseDispenserCommandHandler:
-        class: App\Dispenser\Application\Command\CloseDispenser\CloseDispenserCommandHandler
+    App\Dispenser\Application\Command\ChangeStatus\ChangeStatusCommandHandler:
+        class: App\Dispenser\Application\Command\ChangeStatus\ChangeStatusCommandHandler
         tags: [ 'messenger.message_handler' ]
     
-    App\Dispenser\Application\Event\DispenserOpened\CreateServiceOnDispenserOpenedEventHandler:
-        class: App\Dispenser\Application\Event\DispenserOpened\CreateServiceOnDispenserOpenedEventHandler
+    App\Dispenser\Application\Event\DispenserOpened\CreateDispenserSpendingLineOnDispenserOpenedEventHandler:
+        class: App\Dispenser\Application\Event\DispenserOpened\CreateDispenserSpendingLineOnDispenserOpenedEventHandler
         tags: [ 'messenger.message_handler' ]
     
-    App\Dispenser\Application\Event\DispenserClosed\FinishServiceOnDispenserClosedEventHandler:
-        class: App\Dispenser\Application\Event\DispenserClosed\FinishServiceOnDispenserClosedEventHandler
+    App\Dispenser\Application\Event\DispenserClosed\FinishDispenserSpendingLineOnDispenserClosedEventHandler:
+        class: App\Dispenser\Application\Event\DispenserClosed\FinishDispenserSpendingLineOnDispenserClosedEventHandler
         tags: [ 'messenger.message_handler' ]
     
-    App\Dispenser\Application\Query\Info\PromoterDispensersInfoQueryHandler:
-        class: App\Dispenser\Application\Query\Info\PromoterDispensersInfoQueryHandler
+    App\Dispenser\Application\Query\Spending\DispenserSpendingQueryHandler:
+        class: App\Dispenser\Application\Query\Spending\DispenserSpendingQueryHandler
         tags: [ 'messenger.message_handler' ]

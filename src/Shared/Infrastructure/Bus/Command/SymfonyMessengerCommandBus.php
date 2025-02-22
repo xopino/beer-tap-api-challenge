@@ -2,8 +2,8 @@
 
 namespace App\Shared\Infrastructure\Bus\Command;
 
-use App\Shared\Domain\Bus\Command\Command;
-use App\Shared\Domain\Bus\Command\CommandBusInterface;
+use App\Shared\Domain\Command\Command;
+use App\Shared\Domain\Command\CommandBusInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 

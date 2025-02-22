@@ -2,56 +2,49 @@
 
 namespace App\Tests\Unit\Dispenser\Domain\Entity;
 
-use App\Dispenser\Domain\Bus\Event\DispenserClosedDomainEvent;
-use App\Dispenser\Domain\Bus\Event\DispenserOpenedDomainEvent;
 use App\Dispenser\Domain\Entity\Dispenser;
+use App\Dispenser\Domain\Event\DispenserClosedDomainEvent;
+use App\Dispenser\Domain\Event\DispenserOpenedDomainEvent;
+use App\Dispenser\Domain\Exception\DispenserAlreadyOpenException;
 use PHPUnit\Framework\TestCase;
 
 class DispenserTest extends TestCase
 {
     public function testOpenRecordsDomainEvent(): void
     {
-        $dispenser = $this->getMockBuilder(Dispenser::class)
-            ->onlyMethods(['record'])
-            ->getMock();
-        $attendeeId = 123;
+        $dispenser = DispenserMother::closed('e53f4c1c-423f-47f1-a5a6-ec739bb5f499');
+        $dispenser->pullDomainEvents();
 
-        $dispenser->expects($this->once())
-            ->method('record')
-            ->with($this->isInstanceOf(DispenserOpenedDomainEvent::class));
+        $updatedAt = '2022-01-01T13:50:58Z';
 
-        $dispenser->open($attendeeId);
+        $dispenser->changeStatus(Dispenser::STATUS_OPEN, $updatedAt);
 
-        $this->assertEquals(Dispenser::STATUS_OPEN, $dispenser->getStatus());
+        $events = $dispenser->pullDomainEvents();
+
+        $this->assertInstanceOf(DispenserOpenedDomainEvent::class, $events[0]);
     }
 
     public function testCloseRecordsDomainEvent(): void
     {
-        $dispenser = $this->getMockBuilder(Dispenser::class)
-            ->onlyMethods(['record'])
-            ->getMock();
+        $dispenser = DispenserMother::opened('e53f4c1c-423f-47f1-a5a6-ec739bb5f499');
+        $dispenser->pullDomainEvents();
 
-        $dispenser->open(123);
+        $updatedAt = '2022-01-01T13:50:58Z';
 
-        $dispenser->expects($this->once())
-            ->method('record')
-            ->with($this->isInstanceOf(DispenserClosedDomainEvent::class));
+        $dispenser->changeStatus(Dispenser::STATUS_CLOSED, $updatedAt);
 
-        $dispenser->close();
+        $events = $dispenser->pullDomainEvents();
 
-        $this->assertEquals(Dispenser::STATUS_CLOSED, $dispenser->getStatus());
+        $this->assertInstanceOf(DispenserClosedDomainEvent::class, $events[0]);
     }
 
     public function testOpenThrowsExceptionIfAlreadyOpen(): void
     {
-        $dispenser = new Dispenser();
-        $attendeeId = 123;
+        $dispenser = DispenserMother::opened('e53f4c1c-423f-47f1-a5a6-ec739bb5f499');
+        $updatedAt = '2022-01-01T15:00:00Z';
 
-        $dispenser->open($attendeeId);
+        $this->expectException(DispenserAlreadyOpenException::class);
 
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Dispenser already open');
-
-        $dispenser->open($attendeeId);
+        $dispenser->changeStatus(Dispenser::STATUS_OPEN, $updatedAt);
     }
 }

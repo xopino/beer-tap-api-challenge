@@ -12,6 +12,8 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/migrations": "^3.5",
         "doctrine/orm": "^2.11",
+        "nelmio/api-doc-bundle": "^4.26",
+        "symfony/asset": "^6.4",
         "symfony/console": "^6.0",
         "symfony/dotenv": "^6.0",
         "symfony/messenger": "^6.0",
@@ -19,6 +21,7 @@
         "symfony/runtime": "^6.1",
         "symfony/security-bundle": "^6.2",
         "symfony/serializer": "^6.1",
+        "symfony/twig-bundle": "^6.4",
         "symfony/uid": "^6.4",
         "symfony/yaml": "^6.0"
     },

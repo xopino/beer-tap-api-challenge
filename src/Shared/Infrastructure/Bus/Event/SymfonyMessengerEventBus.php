@@ -2,8 +2,8 @@
 
 namespace App\Shared\Infrastructure\Bus\Event;
 
-use App\Shared\Domain\Bus\Event\DomainEvent;
-use App\Shared\Domain\Bus\Event\EventBusInterface;
+use App\Shared\Domain\Event\DomainEvent;
+use App\Shared\Domain\Event\EventBusInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 

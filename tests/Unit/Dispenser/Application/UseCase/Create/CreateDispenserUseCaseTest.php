@@ -21,15 +21,10 @@ class CreateDispenserUseCaseTest extends TestCase
 
     public function testExecuteShouldCreateDispenser(): void
     {
-        //Given
-        $flowVolume = 1;
-        $price      = 1.0;
-        $promoterId = 1;
+        $flowVolume = 0.42;
 
         $request = new CreateDispenserUseCaseRequest(
-            $flowVolume,
-            $price,
-            $promoterId
+            $flowVolume
         );
 
         $this->dispenserRepositoryMock

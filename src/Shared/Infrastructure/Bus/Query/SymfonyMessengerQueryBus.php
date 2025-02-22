@@ -2,9 +2,9 @@
 
 namespace App\Shared\Infrastructure\Bus\Query;
 
-use App\Shared\Domain\Bus\Query\Query;
-use App\Shared\Domain\Bus\Query\QueryBusInterface;
-use App\Shared\Domain\Bus\Query\QueryResult;
+use App\Shared\Domain\Query\Query;
+use App\Shared\Domain\Query\QueryBusInterface;
+use App\Shared\Domain\Query\QueryResult;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;

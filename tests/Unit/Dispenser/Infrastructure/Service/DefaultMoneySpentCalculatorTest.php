@@ -7,50 +7,53 @@ use PHPUnit\Framework\TestCase;
 
 class DefaultMoneySpentCalculatorTest extends TestCase
 {
-    private DefaultMoneySpentCalculator $classUnderTest;
+    private DefaultMoneySpentCalculator $calculator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
-        parent::setUp();
-
-        $this->classUnderTest = new DefaultMoneySpentCalculator();
+        $this->calculator = new DefaultMoneySpentCalculator();
     }
 
-    /**
-     * @dataProvider provideCalculationData
-     */
-    public function testCalculate(string $startDate, string $endDate, float $flowVolume, float $price, float $expected): void
+    public function testCalculateReturnsCorrectValue(): void
     {
-        $result = $this->classUnderTest->calculate($startDate, $endDate, $flowVolume, $price);
-        $this->assertEquals($expected, $result, '', 0.01);
+        // Given:
+        // Tap opened at 12:00:00 and closed at 12:00:22 (22 seconds elapsed)
+        // Flow volume is 0.064 litres/second.
+        // Expected litres consumed = 0.064 * 22 = 1.408
+        // Expected total spent = 1.408 * 12.25 = 17.248
+        $startDate = '2022-01-01T12:00:00Z';
+        $endDate   = '2022-01-01T12:00:22Z';
+        $flowVolume = 0.064;
+        $expectedSpent = 17.248;
+
+        // When
+        $result = $this->calculator->calculate($startDate, $endDate, $flowVolume);
+
+        // Then
+        $this->assertEquals($expectedSpent, $result);
     }
 
-    public static function provideCalculationData(): array
-    {
-        return [
-            '1 second at 1L/s, price 1'     => ['2024-02-21 12:00:00', '2024-02-21 12:00:01', 1.0, 1.0, 1.0],
-            '10 seconds at 2L/s, price 0.5' => ['2024-02-21 12:00:00', '2024-02-21 12:00:10', 2.0, 0.5, 10.0],
-            '30 seconds at 0.5L/s, price 2' => ['2024-02-21 12:00:00', '2024-02-21 12:00:30', 0.5, 2.0, 30.0],
-            '5 minutes at 3L/s, price 0.75' => ['2024-02-21 12:00:00', '2024-02-21 12:05:00', 3.0, 0.75, 675.0],
-        ];
-    }
-
-    /**
-     * @dataProvider provideInvalidDates
-     */
-    public function testCalculateThrowsExceptionOnInvalidDates(string $startDate, string $endDate): void
+    public function testCalculateThrowsExceptionWhenStartEqualsEnd(): void
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessageMatches('/Start date and end date cannot be the same|End date must be greater than start date/');
+        $this->expectExceptionMessage('Start date and end date cannot be the same.');
 
-        $this->classUnderTest->calculate($startDate, $endDate, 1.0, 1.0);
+        $startDate = '2022-01-01T12:00:00Z';
+        $endDate   = '2022-01-01T12:00:00Z';
+        $flowVolume = 0.064;
+
+        $this->calculator->calculate($startDate, $endDate, $flowVolume);
     }
 
-    public static function provideInvalidDates(): array
+    public function testCalculateThrowsExceptionWhenEndBeforeStart(): void
     {
-        return [
-            'Same start and end date'      => ['2024-02-21 12:00:00', '2024-02-21 12:00:00'],
-            'End date before start date'   => ['2024-02-21 12:01:00', '2024-02-21 12:00:00'],
-        ];
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('End date must be greater than start date.');
+
+        $startDate = '2022-01-01T12:00:22Z';
+        $endDate   = '2022-01-01T12:00:00Z';
+        $flowVolume = 0.064;
+
+        $this->calculator->calculate($startDate, $endDate, $flowVolume);
     }
 }
