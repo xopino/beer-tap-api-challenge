@@ -8,12 +8,16 @@ use App\Dispenser\Domain\Exception\DispenserDoesNotExist;
 use App\Dispenser\Domain\Persistence\Repository\DispenserRepositoryInterface;
 use App\Shared\Domain\Command\CommandHandlerInterface;
 use App\Shared\Domain\Event\EventBusInterface;
+use App\Shared\Domain\Service\TransactionManager\TransactionManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
 class ChangeStatusCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly DispenserRepositoryInterface $dispenserRepository,
-        private readonly EventBusInterface            $eventBus
+        private readonly EventBusInterface            $eventBus,
+        private readonly TransactionManagerInterface  $transactionManager
     )
     {
     }
@@ -24,15 +28,23 @@ class ChangeStatusCommandHandler implements CommandHandlerInterface
      */
     public function __invoke(ChangeStatusCommand $command): void
     {
-        $dispenser = $this->dispenserRepository->findById($command->dispenserId);
+        $this->transactionManager->beginTransaction();
+        try {
+            $dispenser = $this->dispenserRepository->findById($command->dispenserId);
 
-        if (!$dispenser) {
-            throw new DispenserDoesNotExist();
+            if (!$dispenser) {
+                throw new DispenserDoesNotExist();
+            }
+
+            $dispenser->changeStatus($command->status, $command->updatedAt);
+
+            $this->dispenserRepository->save($dispenser);
+            $this->eventBus->publish(... $dispenser->pullDomainEvents());
+            $this->transactionManager->commit();
+        } catch (\Throwable $throwable) {
+            //TODO: Log
+            $this->transactionManager->rollback();;
+            throw $throwable;
         }
-
-        $dispenser->changeStatus($command->status, $command->updatedAt);
-
-        $this->dispenserRepository->save($dispenser);
-        $this->eventBus->publish(... $dispenser->pullDomainEvents());
     }
 }

@@ -8,6 +8,7 @@ use App\Dispenser\Domain\Entity\Dispenser;
 use App\Dispenser\Domain\Exception\DispenserDoesNotExist;
 use App\Dispenser\Domain\Persistence\Repository\DispenserRepositoryInterface;
 use App\Shared\Domain\Event\EventBusInterface;
+use App\Shared\Domain\Service\TransactionManager\TransactionManagerInterface;
 use App\Tests\Unit\Dispenser\Domain\Entity\DispenserMother;
 use PHPUnit\Framework\TestCase;
 
@@ -16,15 +17,19 @@ class ChangeStatusCommandHandlerTest extends TestCase
     private ChangeStatusCommandHandler $handler;
     private DispenserRepositoryInterface $dispenserRepositoryMock;
     private EventBusInterface $eventBusMock;
+    private TransactionManagerInterface $transactionManagerMock;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->dispenserRepositoryMock = $this->createMock(DispenserRepositoryInterface::class);
         $this->eventBusMock            = $this->createMock(EventBusInterface::class);
+        $this->transactionManagerMock  = $this->createMock(TransactionManagerInterface::class);
+
         $this->handler = new ChangeStatusCommandHandler(
             $this->dispenserRepositoryMock,
-            $this->eventBusMock
+            $this->eventBusMock,
+            $this->transactionManagerMock
         );
     }
 
@@ -38,6 +43,16 @@ class ChangeStatusCommandHandlerTest extends TestCase
             status: Dispenser::STATUS_CLOSED,
             updatedAt: '2022-01-01T02:00:00Z'
         );
+
+        $this->transactionManagerMock
+            ->expects($this->once())
+            ->method('beginTransaction');
+        $this->transactionManagerMock
+            ->expects($this->once())
+            ->method('commit');
+        $this->transactionManagerMock
+            ->expects($this->never())
+            ->method('rollback');
 
         $this->dispenserRepositoryMock
             ->expects($this->once())
@@ -72,6 +87,16 @@ class ChangeStatusCommandHandlerTest extends TestCase
             updatedAt: '2022-01-01T02:00:00Z'
         );
 
+        $this->transactionManagerMock
+            ->expects($this->once())
+            ->method('beginTransaction');
+        $this->transactionManagerMock
+            ->expects($this->once())
+            ->method('commit');
+        $this->transactionManagerMock
+            ->expects($this->never())
+            ->method('rollback');
+
         $this->dispenserRepositoryMock
             ->expects($this->once())
             ->method('findById')
@@ -101,6 +126,16 @@ class ChangeStatusCommandHandlerTest extends TestCase
             status: Dispenser::STATUS_CLOSED,
             updatedAt: '2022-01-01T02:00:00Z'
         );
+
+        $this->transactionManagerMock
+            ->expects($this->once())
+            ->method('beginTransaction');
+        $this->transactionManagerMock
+            ->expects($this->once())
+            ->method('rollback');
+        $this->transactionManagerMock
+            ->expects($this->never())
+            ->method('commit');
 
         $this->dispenserRepositoryMock
             ->expects($this->once())
