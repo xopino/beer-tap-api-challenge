@@ -38,7 +38,7 @@ migrations-test:
 	docker compose -f docker-compose.test.yml run --rm skeleton-php-symfony-fpm-test sh -c "\
         			php bin/console doctrine:migrations:migrate && php bin/console doctrine:schema:update --force"
 
-migrations:
+migrations-dev:
 	docker compose run --rm skeleton-php-symfony-fpm sh -c "\
         			php bin/console doctrine:migrations:migrate"
 
