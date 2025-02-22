@@ -50,3 +50,53 @@ service.
   API, external dependencies, etc ...)
 
 ---
+
+## How to Run the Project
+
+### Start the Application
+
+To launch the application, simply run:
+
+```bash
+make up
+make migrations-dev
+```
+
+Then, open your browser and navigate to [http://localhost:8080/dispenser/docs](http://localhost:8080/dispenser/docs) to try out the endpoints.
+
+## Running Tests
+
+To execute the end-to-end tests, run the following commands:
+
+```bash
+make up-test
+make test
+```
+
+## Process Explanation
+
+This project is organized following a Domain-Driven Design (DDD) structure and applies a hexagonal architecture. The core domain is Dispenser, and the primary actions include:
+
+- Create
+- ChangeStatus
+- Events (Opened, Closed)
+- Query
+
+Events, commands, and queries are dispatched by Symfony Messenger, which I decoupled from the application layer by using separate Symfony Messenger implementations.
+
+### Domain Events
+
+- **Dispenser Opened:**
+
+When a dispenser's status is changed to open, a domain event is published synchronously. A corresponding `DispenserSpendingLine` is created with closedAt and totalSpent as null.
+
+- **Dispenser Closed:**
+
+When a dispenser's status is changed to close, a domain event is published synchronously. The corresponding `DispenserSpendingLine` is "finished" by setting the closedAt date and calculating the totalSpent value.
+
+## Next Steps
+
+- **Add Logs**
+- **Improve Code Coverage**
+- **Optimize Process Calculation:** Move spending line calculations to an asynchronous process after each dispenser update, so that the query endpoint doesn't perform heavy calculations.
+- **Create Value Objects:** Introduce Value Objects for date, volume, and totalSpent to enforce domain integrity and encapsulate business rules.
