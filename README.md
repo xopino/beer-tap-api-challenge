@@ -82,7 +82,7 @@ This project is organized following a Domain-Driven Design (DDD) structure and a
 - Events (Opened, Closed)
 - Query
 
-Events, commands, and queries are dispatched by Symfony Messenger, which I decoupled from the application layer by using separate Symfony Messenger implementations.
+Events, commands, and queries are dispatched by Symfony Messenger, which is decoupled from the application layer by using separate Symfony Messenger implementations.
 
 ### Domain Events
 
@@ -93,6 +93,14 @@ When a dispenser's status is changed to open, a domain event is published synchr
 - **Dispenser Closed:**
 
 When a dispenser's status is changed to close, a domain event is published synchronously. The corresponding `DispenserSpendingLine` is "finished" by setting the closedAt date and calculating the totalSpent value.
+
+### TotalSpent Calculation
+The total spent calculation is performed by a `MoneySpentCalculator`. The idea behind this is to decouple the logic of calculating the money spent from the aggregate root. 
+Since the primary objective of a `Dispenser` is to serve beer, and the money spent calculation might vary depending on the promoters and the price they want to set, the `DefaultMoneySpentCalculator` can be replaced with alternative implementations as long as they implement the required contract.
+
+The total spent calculation is done on `FinishDispenserSpendingLineOnDispenserClosedEventHandler` and `DispenserSpendingQueryHandler`.
+
+The event handler FinishDispenserSpendingLineOnDispenserClosedEventHandler uses dependency injection to receive the calculator implementation. This allows the application to change the calculation logic easily. Additionally, more handlers can be created with different calculators.
 
 ## Next Steps
 
